@@ -1,0 +1,63 @@
+-*- Text -*-
+This file was generated automatically by the gen-info-dir script.
+This version was generated on Tue Apr 26 11:10:11 PDT 1994
+by sac@jonny.cygnus.com for /usr/cygnus/comp-tools-940204/info
+
+This is the file .../info/dir, which contains the topmost node of the
+Info hierarchy.  The first time you invoke Info you start off
+looking at that node, which is (dir)Top.
+
+File: dir	Node: Top	This is the top of the INFO tree
+  This (the Directory node) gives a menu of major topics. 
+  Typing "d" returns here, "q" exits, "?" lists all INFO commands, "h" 
+  gives a primer for first-timers, "mTexinfo<Return>" visits Texinfo topic,
+  etc.
+  --- PLEASE ADD DOCUMENTATION TO THIS TREE. (See INFO topic first.) ---
+
+* Menu: The list of major topics begins on the next line.
+
+* info: (info).                 Reading GNU online documentation.
+
+* intro: (intro.info).          An Introduction to Cygnus Releases
+
+* Gcc::                         Using and Porting the GNU C compiler.
+* Reno 1: (reno-1).             The GNU C++ Renovation Project, Phase 1.
+* Cpp: (cpp).			The C preprocessor.
+
+* Gdb: (gdb).                     The GNU debugger.
+* Gdb-Internals: (gdbint).	The GNU debugger's internals.
+* Stabs: (stabs).                 The "stabs" debugging information format.
+
+* Binutils: (binutils).         The GNU binary utilities "ar", "objcopy",
+				"objdump", "nm", "nlmconv", "size",
+                                "strings", "strip", and "ranlib".
+* Ld: (ld).                       The GNU linker.
+* As: (as).                     The GNU assembler.
+
+* make: (make).                 A program for directing recompilation
+* flex: (flex).                  Fast lexical analyzer generator.
+* byacc: (byacc).                bYacc: Sketchy Usage Summary
+* gprof: (gprof).                Profiling your program's execution
+
+* libc::                        The ANSI C library.
+* Libg++::                      The g++ class library.
+* iostream: (iostream).                    The C++ input/output facility.
+* libm::                        An ANSI-C conforming mathematical library.
+
+* Bfd: (bfd).                   The Binary File Descriptor library.
+* readline: (readline).
+
+* Texinfo::                     The documentation format for the gnu project.
+* makeinfo: (makeinfo).          Making info files from texinfo files.
+
+* configure: (configure).        Cygnus configure.
+* configuration: (cfg-paper).	Some theory on configuring source.
+
+* Standards: (standards).        GNU coding standards.
+
+* Chill::                       Chill compiler
+* gasp: (gasp).                     The GNU Assembler Preprocessor
+* history.info: (history.info).
+* COPYING: (license).		The GNU General Public License
+* Mmalloc: (mmalloc).		The GNU mapped-malloc package.
+* Reno 1: (reno-1).             The GNU C++ Renovation Project, Phase 1.

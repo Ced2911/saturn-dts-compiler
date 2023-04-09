@@ -1,0 +1,16 @@
+.SUFFIXES : .x .o .c .s
+CC=gcc
+
+all : hello.x
+	run -v hello.x
+
+	
+hello.s : hello.c
+	$(CC) -O -g -S hello.c
+
+hello.o : hello.s
+	$(AS) -ahld -o hello.o hello.s
+
+
+hello.x: hello.o
+	$(CC) -o hello.x hello.o

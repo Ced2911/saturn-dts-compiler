@@ -1,0 +1,45 @@
+*asm:
+
+
+*asm_final:
+
+
+*cpp:
+
+
+*cc1:
+
+
+*cc1plus:
+
+
+*endfile:
+
+
+*link:
+
+
+*lib:
+%{g*:-lg} %{!p:%{!pg:-lc}}%{p:-lc_p}%{pg:-lc_p}
+
+*lib2:
+%{!shared:-lgcc %L -lgcc}
+
+*startfile:
+%{!shared:%{pg:gcrt0.o%s}%{!pg:%{p:mcrt0.o%s}%{!p:crt0.o%s}}}
+
+*switches_need_spaces:
+
+
+*signed_char:
+%{funsigned-char:-D__CHAR_UNSIGNED__}
+
+*predefines:
+-D__sh__ -Acpu(sh) -Amachine(sh)
+
+*cross_compile:
+1
+
+*multilib:
+. ;
+

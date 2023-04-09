@@ -1,0 +1,33 @@
+-*- Text -*-
+This file was generated automatically by the gen-info-dir script.
+This version was generated on Mon Mar 28 15:35:23 PST 1994
+by sac@jonny.cygnus.com for /b/rel/dos/sh/info
+
+This is the file .../info/dir, which contains the topmost node of the
+Info hierarchy.  The first time you invoke Info you start off
+looking at that node, which is (dir)Top.
+
+File: dir	Node: Top	This is the top of the INFO tree
+  This (the Directory node) gives a menu of major topics. 
+  Typing "d" returns here, "q" exits, "?" lists all INFO commands, "h" 
+  gives a primer for first-timers, "mTexinfo<Return>" visits Texinfo topic,
+  etc.
+
+* Menu: The list of major topics begins on the next line.
+
+
+* As: (as).                     The GNU assembler.
+* Binutils::                    The GNU binary utilities "ar", "ld", "objcopy",
+				"objdump", "nm", "size", "strings", "strip", and "ranlib".
+* Cpp: (cpp).			The C preprocessor.
+* gasp:(gasp).                     The GNU Assembler Preprocessor
+* gcc.inf: (gcc.inf).
+* Gdb::                         The GNU debugger.
+* history.inf: (history.inf).
+* info::                        Reading GNU online documentation.
+* iostream::                    The C++ input/output facility.
+* Ld::                          The GNU linker.
+* libc::                        The ANSI C library.
+* Libgxx::                      The g++ class library.
+* libm::                        An ANSI-C conforming mathematical library.
+* COPYING: (license).		The GNU General Public License

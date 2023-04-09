@@ -1,0 +1,674 @@
+
+GCC for SH Microprocessors FAQ (Frequently Asked Questions)
+
+This release: GCC version cygnus-2.6-95q1, Sega release 950616
+Info file by: Toshiyasu Morita
+ Last update: 05/23/95 @ 5:34 pm
+
+Note:
+
+Sorry about creating so many releases, but we keep finding serious bugs in
+gcc - Cygnus is very sloppy about testing their releases, unfortunately.
+My apologies for any inconvenience this may have caused.
+
+Toshi
+
+--------------------------
+Known bugs in this version
+--------------------------
+
+Performance bugs:
+
+o GCC will insert a "throwaway" memory load instruction into a delay slot
+  which causes an unnecessary memory access and cache line fill.
+  I haven't been able to reproduce this problem, so can't fill out a bug report.
+  If you see this happen, please send me a bug report. (See "Reporting Bugs" at 
+  end of file for directions)
+
+o GCC fails to recognize opportunity for post-increment (gcc/6321)
+  Reported to Cygnus, awaiting patch.
+
+Functional bugs:
+
+o GCC can potentially trash r4 after calling ___ashiftrt_r4_xx.
+  (haven't seen this actually happen, but noticed the possibility)
+  (related to gcc/6544) Reported to Cygnus, will be fixed in 95q2.
+
+-----------
+Change log:
+-----------
+
+cygnus-2.6-95q1-SOA-950616 changes:
+
+  GCC:
+
+  o Fixed function writes outside own stack frame (gcc/7168)
+
+  binutils:
+
+  o Fixed SYSDUMP dumps SYSROF files incorrectly under MS-DOS (binutils/7137)
+
+cygnus-2.6-95q1-SOA-950606 changes:
+
+  Tool suite:
+
+  o Punted on moving to Cygnus 95q2 codebase. 95q2 has too many bugs.
+
+  GCC:
+
+  o Minor improvments to libgcc.a to reduce size by 100+ bytes and improve shift speed.
+
+  o Added SETT insn to sh.md.
+
+  GAS:
+
+  o Fixed GAS calculates expressions in ".byte" statements incorrectly.
+    (i.e. .byte L_foo-L_bar). (gcc/6545) 
+
+  o Fixed GAS crashes on undefined symbols. (binutils/6732 & 6736)
+
+  o Added support for BRAF and BSRF instructions. (gas/6850)
+
+  SRCONV:
+
+  o Fixed SRCONV converting SGL demo files incorrectly. (binutils/6725)
+    New option added to SRCONV; if converting executable COFF files
+    (all references resolved) use the "-n" switch to insure
+    files will be converted properly.
+
+cygnus-2.6-95q1-SOA-950406 changes:
+
+  GCC:
+
+  o Fixed GCC uses wrong base register to access locals (gcc/6670)
+    Occured when function used all registers & function call req'd >4 parms.
+
+  o Fixed GCC generates incorrect stack offset references for variables in
+    nested blocks. (gcc/6665)
+
+  o Fixed ___main was not compiled into libgcc.a.
+    (The primary symptom was "can't find __main" link error message)
+    Hopefully this is the last bug preventing C++ from working properly.
+
+  o Converted shift-by-k and shift-by-n routines in libgcc.a to assembly.
+    (___ashiftrt_r4_n, ___ashrsi3, ___ashlsi3, lshrsi3)
+
+  o Fixed minor bug with GCC calculating AND costs incorrectly. (gcc/6598)
+
+  GDB:
+
+  o GDB under IRIX5.3 now runs under a nice graphical user interface.
+    To use it, be sure your DISPLAY environment variable is set to something appropriate.
+    (e.g. setenv DISPLAY :0)
+
+  Hardcopy documentation:
+
+  o New GNU tools documention (95q1) is now available from Sega.
+ 
+cygnus-2.6-95q1-SOA-950317 changes:
+
+  o Changed to 95q1 codebase, applied all missing patches
+
+  GCC:
+
+  o Fixed problem with r0 occasionally overwritten after call to ___sdivsi3,
+    ___udivsi3, ___mulsi3 (___mulsi3 on sh1 only). (gcc/6455)
+
+  o C++ is now enabled. If you're using straight C, and you'd like to
+    avoid the 5k of overhead for C++ global constructors, insert a dummy
+    function called "__main() {}" to prevent the C++ constructor code
+    from being linked. For reference, __main() is defined in libgcc.a.
+    (g++/6438)
+
+cygnus-2.6.0-941014-SOA-950215 changes:
+
+  GCC:
+
+  o Structure packing is now the default; to turn it off use -mpadstruct (gcc/6331)
+    (GCC now compiles SOJ libraries properly using defaults)
+
+  o Fixed <limits.h>
+
+  o Fixed info files
+
+  o READ.ME file restructured; renamed GCC.FAQ
+
+cygnus-2.6.0-941014-SOA-950208 changes:
+
+  GCC:
+
+  o Fixed vararg structure passing by value with -mpackstruct (gcc/6278)
+
+  SRCONV:
+
+  o SRCONV now generates debug information usable by E7000 ICE!
+    "DA file\_func" now works in E7000 ICE.
+
+cygnus-2.6.0-941014-SOA-950201 changes:
+
+  RUN:
+
+  o Fixed SH simulator simulates SUBC, NEGC, ADDC incorrectly (gcc/6200)
+  o Fixed SH simulator lacks SUBV, MAC.W (gdb/6203)
+
+  GCC:
+
+  o Fixed GCC generates MUL.L #2 for multiply by two (gcc/6208)
+  o Fixed GCC loads parameter into wrong register when passing structures
+    (occasionally) (gcc/6197)
+  o Fixed GCC generates incorrect stack cleanup code on function after function
+    with infinite loop (gcc/6116)
+
+  GAS:
+
+  o Fixed GAS truncates GBR offsets to four bits (gas/6207)
+
+  LD:
+
+  o Fixed LD generates incorrect S-records (ld/6215)
+
+  Libraries:
+
+  o Fixed _ashlsi3 has no delay slot instruction for rts 
+  o Turned on optimization - libraries are much smaller!
+
+-------------------
+Install directions:
+-------------------
+
+1) Don't forget to back up the previous version of GCC!
+
+   Sometimes when changes are made to fix bugs in gcc the modifications
+   will create new bugs - so be sure to save your previous version!
+
+2) Make sure you're in 80x24 video mode. (type "mode co80" if you're not)
+
+3) Insert disk 1 and type "install".
+
+4) After installation is finished, look at the setenv.bat file to see which
+   environment variables should be set. The basic ones for compiling C are:
+
+   set PATH=%PATH%;c:\gccsh\bin
+   set COMPILER_PATH=c:\gccsh\bin
+   set C_INCLUDE_PATH=c:\gccsh\include
+   set LIBRARY_PATH=c:\gccsh\lib
+   set INFOPATH=c:\gccsh\info
+   set GO32=emu c:\gccsh\bin\emu387    <- ONLY NEEDED FOR 386 MACHINES
+
+5) Your compiler should be installed - type "gcc" and it should say:
+
+   gcc.exe: No input files
+
+6) Be sure to recompile all of your source files. The code between different
+   versions may not be compatible; the most notable was an object file format
+   change during 9/94. If you mix object files from different versions
+   it's likely your code will fail.
+
+7) A hardcopy of the GCC manual is available from Sega; don't forget to
+   request a copy if you don't already have one.
+
+8) Source is available on ftp.segaoa.com in /pub/gnutools/gnutools-xxxxxx.tar.gz.
+   We don't recommend you attempt to compile the compiler unless you're a 
+   experienced Unix programmer, however, as it entails a lot of work.
+
+9) A hypertext help system is included with the gnu tools package; to see
+   a list of help topics type "info" and move the cursor using the arrow
+   keys to the topic of interest, and press return.
+
+------------------------------------------
+Common problems - Running GCC under MS-DOS
+------------------------------------------
+
+1) GCC/AS/LD says "can't open blah: interrupted system call"
+
+   You don't have enough file descriptors. Try setting FILES=30 in your
+   CONFIG.SYS
+
+2) GCC crashes frequently.
+
+   Even though GCC is a protect-mode program, it still requires
+   conventional memory for disk buffers & etc. If you have less than
+   500k of conventional memory free, it will crash quite frequently.
+   If you have more than 550k free, GCC should run fine.
+
+   When GCC crashes, it tends to leave blocks allocated on your hard
+   disk, and eventually you will have megabytes of unused but allocated
+   space on your hard drive. When GCC crashes, be sure to run SCANDISK
+   or CHKDSK after rebooting.
+
+   Also, if you are compiling on a 486 or above with the GO32 environment
+   variable set to emulate the 80387, GCC tends to crash for some reason.
+   Be sure your GO32 environment variable is cleared if you're compiling
+   on a 486 or above.
+
+3) GCC & utilities help
+
+   The "info" command gives you help on various utilities. To see the
+   command line switches for gcc, type "info gcc". To see a list of the
+   available info topics, look in the C:\GCCSH\INFO directory. To leave
+   the info utility, type ctrl-X ctrl-C. (It's a mini-Emacs).
+
+4) LD reports "Not enough memory" when linking large programs.
+
+   To see how much memory is available for use by the DOS extender, type:
+
+   go32
+
+   The DOS extender will report how much RAM and swap space is available.
+
+   If you're using EMM386, one way to increase the available RAM is to use
+   
+   EMM386 AUTO
+
+   and emm386 will automagically convert XMS to EMS when needed.
+
+5) Linker is slow.
+
+   Try using a RAMdisk for temporary files - I've heard various reports
+   it can decrease link time by a factor of two, or more.
+
+6) Can't redirect compiler errors to a file.
+
+   Set the GO32 environment variable to include the string "2r1". This
+   will redirect stderr to stdout enabling error otuput to be 
+   redirected.
+
+---------------------
+Notes - C programming
+---------------------
+
+1) Using C++ style comments (//) in C programs.
+
+   To enable "//" style comments in C programs, add the following to your
+   gcc command-line parameters:
+
+   -Wp,-lang-c-c++-comments
+
+2) Don't forget to clear out your BSS & set your own stack.
+
+   Programs compiled by gcc expect their BSS to be cleared before main()
+   is called - if you don't have a stub which does this, then your code
+   will probably not function correctly.
+
+   Variables such as "int foo = 0;" will be placed in your BSS, and if
+   your BSS isn't cleared, then (obviously) foo may have a nonzero value.
+
+   The default stack in crt0.o is eight bytes - be sure to set up
+   your own stack if you plan to do anything at all.
+
+3) Use "volatile" qualifier and cache-through address where necessary.
+
+   GCC will load a value once and test it, if it can:
+
+   int wait_flag;
+   while (wait_flag);
+
+   may generate:
+
+        mov	@r4,r0
+   L5   cmp/eq  #0,r0
+        bf      L5
+
+   unless wait_flag is declared properly.
+
+   The volatile qualifier MUST be used on:
+
+   a) Semaphores between CPUs
+   b) Semaphores between mainline and interrupt code
+   c) Pointers to hardware registers
+
+   The cache-through address MUST be used on:
+
+   a) Semaphores between CPUs
+   b) Pointers to hardware registers
+
+   Also, be sure variables which are accessed by cache-through are
+   CONSISTENTLY accessed via cache-through - if you write to non-cached space,
+   then read in cached space you may get the cached version of the data, which
+   will not be correct.
+
+4) Compiler switches:
+
+   Recommended:
+
+   -m2: Tells gcc to generate SH2 code. gcc-sh generates code for SH1
+        by default.
+
+	-m2 will allow gcc to generate:
+
+	a) muls, mulu instructions
+	b) Delayed branch instructions
+
+   -O2: Turns on maximum optimization. If you see any bugs, drop down to
+        just -O and report the bug the Sega Technical Support. If you still
+	encounter the bug, use -O0.
+
+   -ansi: Turns on ansi-compliance warnings. For strict ANSI compliance
+	  (no GNU C extensions) use -pedantic instead (somewhat deprecated).
+
+   -Wall: Turns on all warnings. This will detect uninitialized variables,
+	  unused variables, etc. Generally a Good Thing.
+
+   -nostdlib: Prevents gcc from linking libraries containing useless
+	      functions such as exit(), fork(), etc.
+
+   -mclen3: Allows gcc to use up to 3 instructions to synthesize a constant
+	    into a register, rather than loading from a literal pool.
+	    This option is probably most useful on the 32x since it has
+	    slower memory.
+
+   Dangerous (may break code), but potentially useful:
+
+   -mbsr: Instructs gcc to use "bsr" for probably (not provably) short branches.
+	  It can decrease code size somewhat and increase execution speed.
+	  However, if the call is out of range your code will silently break
+	  since currently the assembler does not issue a warning message
+	  if the branch is too far. Use with caution. (This option may
+	  disappear in later versions.)
+
+5) Linker cannot find symbols which are in your library files.
+
+   The linker only makes one pass through your libraries, so if you have
+   two libraries which are dependent on each other you must mention the first
+   library, then the second library, then the first library again.
+
+   It is possible to create pathological cases where the linker cannot
+   link your libraries. In such a case, you probably want to merge the
+   offending libraries into one single library.
+
+   For reference, the default link order is:
+
+   Without floating point math: -lgcc -lc -lgcc
+   With    floating point math: -lm -lgcc -lc -lgcc
+
+6) Porting from Hitachi C
+
+   Two problems we see often when converting code from SHC to GCC:
+
+   A) Missing volatile qualifiers.
+
+      SHC does not optimize heavily so you can be fairly sloppy with the
+      "volatile" qualifier and code will still work. Not so with GCC -
+      it optimizes very heavily and it will remove redundant loads.
+      See item #3 for specific circumstances where volatile must be used.
+
+   B) Not preserving MACL and MACH in interrupt-called routines.
+
+      SHC implements "callee preserves MACL and MACH" calling convention,
+      whereas GCC does not. If you have interrupt routines written in SHC
+      and you port them to GCC, they will not preserve MACL and MACH and
+      your mainline code will become flaky due to MACL/MACH corruption.
+
+7) Anonymous unions
+
+   Anonymous unions are not a part of the ANSI C (X3J11) standard; they
+   are a C++ feature implemented by some C compilers, but not by gcc.
+
+8) Floating point
+
+   Floating point is very slow. Since the SH2 doesn't have a hardware
+   floating point unit, all floating-point operations must be emulated
+   in software by the SH2. Avoid floating point! Use fixed point instead.
+
+   If you must use floating point, link with the floating point library
+   (libm.a) by specifying: "gcc <filename.c> -lm". The "-lm" MUST be
+   after the filename, not before.
+
+9) #pragma interrupt
+
+   "#pragma interrupt" specifies the next function is an interrupt
+   handler. This pragma instructs GCC to:
+
+   1) Save all modified registers. (r0-r14, macl & mach)
+
+   2) Terminate the function with an "rte" instead of an "rts".
+
+10) GCC code quality
+
+   GCC produces code which is (IMHO) average for SH2, but not great.
+   GCC has very good target-independent optimization (common subexpression
+   elimination, invariant loop expression hoisting, etc) but mediocre
+   SH-specific optimizations. On complicated functions one can easily produce
+   code which runs twice as fast as GCC output. Two factors which contribute
+   to GCC's mediocre code quality for complicated functions:
+
+   1) GCC does not use the @(r0,rn) addressing mode very effectively, and
+      thus must synthesize the effect by using multiple registers
+      (mov rn,rx; add r0,rx; mov @rx,ry).
+
+   2) GCC does not perform "alignment optimizations" i.e. it does not
+      align external bus access instructions on longword alignment
+      so it may utilize free bus cycles.
+
+   3) GCC does not optimize for branches - you will often see code such as:
+
+        bt  L128
+        bra L130
+      L128:
+    
+11) Generating mixed C/assembly listings
+
+   To generate a nice assembly listing with interspersed C source, try:
+
+   gcc -O2 -m2 -g -S foo.c
+   as -ahld foo.s > junk.tmp
+
+   "junk.tmp" will now contain a nicely formatted mixed C/assembly listing.
+
+12) Inline assembly in C functions
+
+    Be sure to declare your inline assembly as "__asm__ volatile" instead of
+    just "__asm__" so gcc won't try to optimize and/or remove your
+    inline assembly code.
+
+    GCC has been known to optimize bits of inline assembly which aren't
+    volatile, producing strange results.
+
+    Also, if the two colons which separate the register constraints
+    at the end of an inline assembly fragment are missing, GCC will
+    occasionally crash. Be sure to place two colons even if there are
+    no register constraints in the inline assembly.
+
+    Incidentally, GCC will allow you to put an inline assembly section
+    outside of a function, so you can write whole assembly routines
+    in a C source file without wrapping them inside a C function!
+
+    When using assembly outside of a C function, omit the "volatile"
+    keyword since it isn't necessary and will only confuse the compiler.
+
+    Note: Inline assembly in a C source file outside of a function
+    is not source-level debuggable - if you wish to write large amounts
+    of assembly code it's recommended you create a separate assembly file
+    so it may be properly source-level debugged.
+
+13) gprof/gcov
+
+    gprof and gcov are included, but do not work on Saturn/32x - 
+    there is no filesystem support to create files.
+
+13) gcc-2.6.3
+
+    Don't use gcc-2.6.3 - it was released in December '94, and it
+    still has many bugs for the Hitachi SH target.
+    Use the latest SOA release instead.
+
+14) Standard C library calls - malloc(), free(), creat(), etc.
+
+    They exist, but they require host operating system support
+    through trap #3. See the source for more details.
+
+15) .ctor and .dtor sections
+
+    .ctor is the section for global C++ constructors, and .dtors are the
+    section for global C++ destructors. They require appropriate labels
+    to delimit their start and end addresses.
+
+16) Viewing gcc phase execution
+
+    If you'd like to see the commands gcc passes to each of its passes, 
+    pass the "-v" option to gcc.
+
+----------------------------
+Notes - Assembly programming
+----------------------------
+
+1) Using GAS:
+
+   Don't forget to align your literals! (.align 2) Failure to do so will
+   cause you to spend hours tracking down bus error bugs! Also, if you
+   have word literals put them at the end of your literal section so
+   they won't misalign any following longword literals.
+
+   Also, when using literals, be sure to place your longword literals first
+   followed by your word literals. If you place your word literals first,
+   if there are an odd number of word literals it will misalign the following
+   longword literals.
+
+   Note: .align in GAS specifies the number of least-significant zero bits,
+         not the actual alignment value. For example. .align 1 is word-aligned,
+	 .align 2 is longword-aligned, .align 4 is paragraph-aligned.
+
+   Also, GAS will not report literals which are too far from their reference,
+   nor will GAS report branches too far from their target. Be very careful
+   when hand-coding with GAS!
+
+   GAS also will not report illegal instructions (jump/branch) or stupid
+   (i.e. pc-relative) instructions in delay slots.
+
+2) GCC parameter passing conventions:
+
+       r0: Function return value
+
+    r0-r3: Temporaries. These are presumed to be destroyed by calling
+	   a function - it's not necessary to save & restore them.
+
+    r4-r7: First four arguments. May be destroyed by callee.
+
+   r8-r15: Usable temporaries. These are assumed to be preserved across
+	   function calls, so any assembly-language functions which
+	   interface with gcc MUST preserve these registers.
+
+       pr: Processor return - must be preserved, obviously.
+
+      gbr: gcc currently does not generate code which utilizes the gbr -
+	so your assembly routines are free to use the gbr.
+
+  macl & mach: Assumed to be destroyed.
+
+3) Source-level debugging GAS assembly
+
+   The easiest way to assemble assembly files into .o files with debugging
+   information is to use the ".S" extension (MUST be uppercase) and assemble
+   them with gcc:
+
+   gcc -c file.S   
+
+   gcc will call cpp and as with the appropriate commands to properly assemble
+   the files with source-level debug information.
+
+   Incidentally, this also enables you to use all C preprocessor commands, 
+   e.g. "#define", "#if ... #else ... #endif", in your assembly source files.
+
+4) Stupid assembly tricks:
+
+   A) Use MACL, MACH as temporaries.
+   B) Save pr in a register (sts.l pr,r14)
+
+4) Post-morteming SH2 crashes
+
+   When the SH2 crashes, the best thing to do is to examine the PR to
+   determine the return address of the offending routine. This will often
+   tell you which routine has crashed. This applies to C code as well
+   as assembly code.
+
+----------------------
+Writing efficient code
+----------------------
+
+1) Avoid code such as:
+
+   temp[index++] = a;
+   temp[index++] = b;
+   temp[index++] = c;
+
+   The C language standard specifies all variables must be updated at the
+   end of a statement, so the code generated will update "index" for
+   every statement. This is much better:
+
+   temp[index]   = a;
+   temp[index+1] = b;
+   temp[index+2] = c;
+   index += 3;
+
+   Another solution is to specify "index" as a "register int", which
+   does not necessarily registerize index but will exclude it from
+   aliasing considerations (i.e. will assume writes through pointers will
+   not modify the value of index)
+
+2) Use local variables.
+
+   Global variables are slow - to retrieve the value, the SH2 typically
+   must execute:
+
+   mov.l L2,r1
+   mov.l @r1,r1
+
+   Local variables are faster - it's stack-relative, and parameters
+   are even faster because the first four are passed in registers r4-r7.
+
+3) Use unsigned int if shifting right.
+
+   The SH2 has no instructions for "arithmetic shift right" so it must
+   generate extra code to shift signed values right. Try to make variables
+   which will be shifted right of unsigned type.
+
+4) Write small functions.
+
+   We've noticed GCC generates very pessimal code when it starts to
+   spill registers, so try to avoid doing too much in one function.
+
+   A function which exceeds more than about a hundred lines should
+   be broken into smaller functions.
+
+5) Don't use C++.
+
+   int main(void)
+   {
+       cout << "hello, world";
+   }
+
+  is 448k in C++. In general, C++ code tends to be huge for two reasons:
+
+    A) The code output is not as efficient, and
+
+    B) It tends to drag in huge libraries.
+
+--------------
+Reporting bugs
+--------------
+
+Please make sure your bug actually exists, since we've had a spate of
+subsequently disproven bug reports, and each release of GCC is
+sanity checked. (We run it through c-torture and recompile DOOM 32x.)
+
+When sending bug reports, please send:
+
+1) The smallest C source fragment that will reproduce the bug, preferably
+   already preprocessed, (the -E switch)
+
+2) The resultant erroneous output code with a few comments indicating
+   the offending code, and why it is incorrect (See "Generating mixed
+   C/assembly listings" for instructions on producing mixed listings),
+
+3) The compiler switch(es) used to compile the example,
+
+4) The compiler version - the compiler version and Sega release date
+   at the top of this file. Be sure to verify the correct version by
+   typing "gcc -v".
+
+Please send the above to:
+
+SOA Developer Technical Support hotline: 415/802-1719
+
+
+

@@ -1,0 +1,45 @@
+*asm:
+%{ml:-little}
+
+*asm_final:
+
+
+*cpp:
+%{ml:-D__LITTLE_ENDIAN__}
+
+*cc1:
+
+
+*cc1plus:
+
+
+*endfile:
+
+
+*link:
+%{ml:-m shl}
+
+*lib:
+%{!shared:%{g*:-lg} %{!p:%{!pg:-lc}}%{p:-lc_p}%{pg:-lc_p}}
+
+*libgcc:
+%{!shared:-lgcc}
+
+*startfile:
+%{!shared:%{pg:gcrt0%O%s}%{!pg:%{p:mcrt0%O%s}%{!p:crt0%O%s}}}
+
+*switches_need_spaces:
+
+
+*signed_char:
+%{funsigned-char:-D__CHAR_UNSIGNED__}
+
+*predefines:
+-D__sh__ -Acpu(sh) -Amachine(sh)
+
+*cross_compile:
+1
+
+*multilib:
+. !ml !m2 !m3;l ml !m2 !m3;sh2 !ml m2;sh2 !ml m3;l/sh2 ml m2;l/sh2 ml m3;
+
